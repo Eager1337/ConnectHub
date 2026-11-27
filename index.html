@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ConnectHub — a calmer, clearer campus community space.">
+  <title>ConnectHub | Campus community</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="ConnectHub home"><span class="brand-mark">C</span><span>connect<span class="brand-light">hub</span></span></a>
+      <div class="profile-mini"><div class="avatar avatar-purple">AM</div><div><strong>Alex Morgan</strong><small>Student account</small></div><span class="online-dot"></span></div>
+      <p class="nav-label">MENU</p>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="home"><span>⌂</span> Home</button>
+        <button class="nav-item" data-view="discover"><span>⌕</span> Discover</button>
+        <button class="nav-item" data-view="events"><span>▦</span> Campus events</button>
+        <button class="nav-item" data-view="messages"><span>✉</span> Messages <b class="nav-count">2</b></button>
+      </nav>
+      <p class="nav-label">YOUR SPACE</p>
+      <button class="nav-item" data-view="saved"><span>☆</span> Saved posts</button>
+      <button class="nav-item" data-view="notifications"><span>♧</span> Notifications <b class="nav-count">3</b></button>
+      <div class="sidebar-bottom"><div class="help-card"><strong>Need a hand?</strong><p>Find your way around ConnectHub.</p><button id="helpBtn" class="text-link">Quick guide →</button></div><small>HCI prototype · 2026</small></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar"><div class="mobile-brand"><span class="brand-mark">C</span> connecthub</div><div class="search-wrap"><span>⌕</span><input id="globalSearch" type="search" placeholder="Search people, posts, events..." aria-label="Search ConnectHub"></div><div class="top-actions"><button class="icon-btn" id="topNotifications" aria-label="Open notifications">♧<i></i></button><div class="avatar avatar-purple">AM</div></div></header>
+      <div class="content-wrap">
+        <section class="view active" id="view-home">
+          <div class="welcome-row"><div><p class="eyebrow">THURSDAY, YOUR CAMPUS</p><h1>Good afternoon, Alex <span>✦</span></h1><p class="muted">Your campus community, all in one place.</p></div><button class="primary-btn" id="jumpComposer">＋ Create a post</button></div>
+          <div class="stats-row"><div class="stat-card"><span class="stat-icon lavender">✦</span><div><strong>1,248</strong><small>Community members</small></div></div><div class="stat-card"><span class="stat-icon mint">▦</span><div><strong>08</strong><small>Events this week</small></div></div><div class="stat-card"><span class="stat-icon peach">✉</span><div><strong>02</strong><small>Unread messages</small></div></div></div>
+          <div class="section-heading"><div><h2>Community feed</h2><p class="muted">What’s happening around campus</p></div><button class="subtle-btn" id="sortBtn">Latest ↓</button></div>
+          <div class="feed-layout"><div class="feed-column">
+            <form class="composer card" id="postForm"><div class="composer-top"><div class="avatar avatar-purple">AM</div><label class="sr-only" for="postText">Write a post</label><textarea id="postText" rows="2" placeholder="Share something with your campus..." required></textarea></div><div class="composer-bottom"><span class="muted small">Be kind. Keep it helpful.</span><button class="primary-btn small-btn" type="submit">Publish post</button></div></form>
+            <div id="feedList" class="feed-list" aria-live="polite"></div>
+          </div>
+          <aside class="right-column">
+            <div class="card side-card"><div class="side-title"><h3>Upcoming events</h3><button class="text-link" data-view-link="events">See all</button></div><div class="mini-event"><div class="date-tile"><b>28</b><small>NOV</small></div><div><strong>Design thinking workshop</strong><small>Innovation Lab · 10:00 AM</small><span class="event-tag">Workshop</span></div></div><div class="mini-event"><div class="date-tile"><b>30</b><small>NOV</small></div><div><strong>Campus culture day</strong><small>Main courtyard · 12:30 PM</small><span class="event-tag green">Community</span></div></div></div>
+            <div class="card side-card"><h3>People you may know</h3><div class="person-row"><div class="avatar avatar-blue">SK</div><div><strong>Sarah Kamara</strong><small>Computer Science</small></div><button class="follow-btn">＋</button></div><div class="person-row"><div class="avatar avatar-orange">JD</div><div><strong>James Davis</strong><small>Business Studies</small></div><button class="follow-btn">＋</button></div><div class="person-row"><div class="avatar avatar-green">FT</div><div><strong>Fatmata Turay</strong><small>Information Systems</small></div><button class="follow-btn">＋</button></div></div>
+          </aside></div>
+        </section>
+
+        <section class="view" id="view-discover"><div class="page-heading"><p class="eyebrow">EXPLORE YOUR COMMUNITY</p><h1>Discover</h1><p class="muted">Find conversations, classmates and campus groups.</p></div><div class="card discover-card"><h2>Find your people</h2><p class="muted">Search the feed or explore the suggested groups below.</p><div class="group-grid"><article class="group-card"><span>💻</span><h3>Tech & Innovation</h3><p>Projects, coding and new ideas.</p><small>328 members</small></article><article class="group-card"><span>🎨</span><h3>Creative Corner</h3><p>Design, photography and art.</p><small>194 members</small></article><article class="group-card"><span>📚</span><h3>Study Partners</h3><p>Learn together and share notes.</p><small>512 members</small></article></div></div></section>
+
+        <section class="view" id="view-events"><div class="page-heading"><p class="eyebrow">MEET, LEARN, TAKE PART</p><h1>Campus events</h1><p class="muted">Activities and opportunities happening around campus.</p></div><div class="event-list"><article class="card event-card"><div class="date-tile large-date"><b>28</b><small>NOV</small></div><div class="event-info"><span class="event-tag">Workshop</span><h2>Design thinking workshop</h2><p class="muted">Innovation Lab · 10:00 AM – 12:00 PM</p><p>Explore practical ways to understand users and design better solutions.</p><small class="muted">Hosted by ICT Society · 34 attending</small></div><button class="primary-btn rsvp" data-event="design">RSVP</button></article><article class="card event-card"><div class="date-tile large-date"><b>30</b><small>NOV</small></div><div class="event-info"><span class="event-tag green">Community</span><h2>Campus culture day</h2><p class="muted">Main courtyard · 12:30 PM – 4:00 PM</p><p>Celebrate campus creativity, food, music and student communities.</p><small class="muted">Hosted by Student Union · 86 attending</small></div><button class="primary-btn rsvp" data-event="culture">RSVP</button></article><article class="card event-card"><div class="date-tile large-date"><b>03</b><small>DEC</small></div><div class="event-info"><span class="event-tag gold">Academic</span><h2>Research skills clinic</h2><p class="muted">Library Room 2 · 2:00 PM – 3:30 PM</p><p>Get support with academic sources, citations and research planning.</p><small class="muted">Hosted by Library Services · 21 attending</small></div><button class="primary-btn rsvp" data-event="research">RSVP</button></article></div></section>
+
+        <section class="view" id="view-messages"><div class="page-heading"><p class="eyebrow">STAY IN TOUCH</p><h1>Messages</h1><p class="muted">A simple preview of your campus conversations.</p></div><div class="card message-panel"><div class="conversation active"><div class="avatar avatar-blue">SK</div><div><strong>Sarah Kamara</strong><p class="muted">Are we still meeting for the group project?</p></div><small>10:42</small></div><div class="conversation"><div class="avatar avatar-orange">JD</div><div><strong>James Davis</strong><p class="muted">Thanks for sharing the notes!</p></div><small>Yesterday</small></div><p class="muted small">Messaging is represented as a front-end concept in this prototype. No messages are sent to a real person.</p></div></section>
+
+        <section class="view" id="view-saved"><div class="page-heading"><p class="eyebrow">KEEP WHAT MATTERS</p><h1>Saved posts</h1><p class="muted">Posts you have bookmarked appear here.</p></div><div id="savedList" class="feed-list"></div></section>
+        <section class="view" id="view-notifications"><div class="page-heading"><p class="eyebrow">CAMPUS UPDATES</p><h1>Notifications</h1><p class="muted">Important updates from your community.</p></div><div class="card notification-list"><div class="notification unread"><span class="notif-icon">♡</span><div><strong>Sarah Kamara liked your post</strong><p class="muted">“Looking for teammates for the design project...”</p><small>15 minutes ago</small></div></div><div class="notification unread"><span class="notif-icon">▦</span><div><strong>New event posted</strong><p class="muted">Design thinking workshop · 28 November</p><small>1 hour ago</small></div></div><div class="notification unread"><span class="notif-icon">✉</span><div><strong>You have a new message</strong><p class="muted">Sarah Kamara sent you a message.</p><small>2 hours ago</small></div></div><button class="subtle-btn" id="markRead">Mark all as read</button></div></section>
+      </div>
+      <footer>ConnectHub · Designed around people, not just features.</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="helpDialog"><div class="dialog-head"><h2>Quick guide</h2><button class="icon-btn" id="closeHelp" aria-label="Close guide">×</button></div><p>Use the left menu to explore the campus feed, discover groups, view events and open your saved posts. You can publish a sample post, like or save a feed item, and RSVP to an event. This prototype stores changes only in the current browser session.</p><button class="primary-btn" id="gotIt">Got it</button></dialog>
+  <script src="app.js"></script>
+</body>
+</html>
