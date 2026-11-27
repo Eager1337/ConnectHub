@@ -22,8 +22,8 @@ A responsive platform where students can view campus announcements, discover int
 ### Idea 2 — StudyMate: Peer study matching
 A student-facing tool that helps learners find study partners by course, topic, availability and preferred study style. A guided matching flow could help students form study groups.
 
-### Idea 3 — QueueLess: Campus service queue interface
-A lightweight interface for viewing estimated waiting times and joining a virtual queue for common campus services. Clear status updates could reduce uncertainty while students wait.
+### Idea 3 — AgriConnect: Farmer–buyer marketplace
+An ICT marketplace that helps farmers publish available crops and quantities, connect with buyers, compare current market prices and communicate about potential sales. The interface could also help users keep clearer digital records of listings and enquiries. This concept would need field research with farmers and buyers to validate connectivity, digital-literacy, trust and pricing-information needs.
 
 ## 3. Selected idea and justification
 ConnectHub is selected because it addresses several connected student activities through a single interface while remaining feasible to prototype and evaluate within the course timeframe. Its core flows—viewing a feed, finding groups, checking events, saving useful posts and composing an update—can be demonstrated without implementing production messaging, authentication or institutional databases. The other concepts are useful but narrower: StudyMate concentrates on matching, while QueueLess concentrates on service queues. ConnectHub offers a broader but still manageable opportunity to apply navigation, information hierarchy, feedback, consistency and responsive interaction design.
