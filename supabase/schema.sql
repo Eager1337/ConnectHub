@@ -24,7 +24,7 @@ create table if not exists public.post_likes (
   created_at timestamptz not null default now(),
   primary key (post_id,user_id)
 );
-create table if not exists public.comments (
+create table if not exists public.saved_posts (\n  post_id uuid not null references public.posts(id) on delete cascade,\n  user_id uuid not null references public.profiles(id) on delete cascade,\n  created_at timestamptz not null default now(),\n  primary key (post_id,user_id)\n);\ncreate table if not exists public.comments (
   id uuid primary key default gen_random_uuid(),
   post_id uuid not null references public.posts(id) on delete cascade,
   author_id uuid not null references public.profiles(id) on delete cascade,
@@ -95,7 +95,7 @@ create index if not exists notifications_user_idx on public.notifications(user_i
 alter table public.profiles enable row level security;
 alter table public.posts enable row level security;
 alter table public.post_likes enable row level security;
-alter table public.comments enable row level security;
+alter table public.comments enable row level security;\nalter table public.saved_posts enable row level security;
 alter table public.campus_groups enable row level security;
 alter table public.group_members enable row level security;
 alter table public.events enable row level security;
@@ -118,7 +118,7 @@ create policy "Likes visible to signed-in users" on public.post_likes for select
 create policy "Users like as themselves" on public.post_likes for insert to authenticated with check (auth.uid()=user_id);
 create policy "Users remove own likes" on public.post_likes for delete to authenticated using (auth.uid()=user_id);
 
-create policy "Comments visible to signed-in users" on public.comments for select to authenticated using (true);
+create policy "Users manage own saved posts" on public.saved_posts for all to authenticated using (auth.uid()=user_id) with check (auth.uid()=user_id);\n\ncreate policy "Comments visible to signed-in users" on public.comments for select to authenticated using (true);
 create policy "Users comment as themselves" on public.comments for insert to authenticated with check (auth.uid()=author_id);
 create policy "Authors delete own comments" on public.comments for delete to authenticated using (auth.uid()=author_id);
 
@@ -136,12 +136,37 @@ create policy "RSVPs visible to signed-in users" on public.event_rsvps for selec
 create policy "Users RSVP themselves" on public.event_rsvps for insert to authenticated with check (auth.uid()=user_id);
 create policy "Users cancel own RSVP" on public.event_rsvps for delete to authenticated using (auth.uid()=user_id);
 
-create policy "Members read conversations" on public.conversations for select to authenticated using (exists(select 1 from public.conversation_members m where m.conversation_id=id and m.user_id=auth.uid()));
+create or replace function public.is_conversation_member(cid uuid)
+returns boolean language sql stable security definer set search_path=public as $$
+  select exists(select 1 from public.conversation_members where conversation_id=cid and user_id=auth.uid());
+$$;
+create policy "Members read conversations" on public.conversations for select to authenticated using (public.is_conversation_member(id));
 create policy "Signed-in users create conversations" on public.conversations for insert to authenticated with check (auth.uid() is not null);
-create policy "Members see conversation members" on public.conversation_members for select to authenticated using (exists(select 1 from public.conversation_members m where m.conversation_id=conversation_id and m.user_id=auth.uid()));
+create policy "Members see conversation members" on public.conversation_members for select to authenticated using (public.is_conversation_member(conversation_id));
 create policy "Users add themselves to conversations" on public.conversation_members for insert to authenticated with check (auth.uid()=user_id);
-create policy "Members read messages" on public.messages for select to authenticated using (exists(select 1 from public.conversation_members m where m.conversation_id=conversation_id and m.user_id=auth.uid()));
-create policy "Members send messages as themselves" on public.messages for insert to authenticated with check (auth.uid()=sender_id and exists(select 1 from public.conversation_members m where m.conversation_id=conversation_id and m.user_id=auth.uid()));
+create policy "Members read messages" on public.messages for select to authenticated using (public.is_conversation_member(conversation_id));
+create policy "Members send messages as themselves" on public.messages for insert to authenticated with check (auth.uid()=sender_id and public.is_conversation_member(conversation_id));
+create or replace function public.start_conversation(other_user uuid)
+returns uuid language plpgsql security definer set search_path=public as $$
+declare cid uuid;
+begin
+  if auth.uid() is null or other_user is null or other_user=auth.uid() then
+    raise exception 'Choose another signed-in student';
+  end if;
+  if not exists(select 1 from public.profiles where id=other_user) then
+    raise exception 'Student account not found';
+  end if;
+  select c.id into cid from public.conversations c
+  join public.conversation_members a on a.conversation_id=c.id and a.user_id=auth.uid()
+  join public.conversation_members b on b.conversation_id=c.id and b.user_id=other_user
+  where (select count(*) from public.conversation_members m where m.conversation_id=c.id)=2
+  limit 1;
+  if cid is null then
+    insert into public.conversations default values returning id into cid;
+    insert into public.conversation_members(conversation_id,user_id) values(cid,auth.uid()),(cid,other_user);
+  end if;
+  return cid;
+end; $$;
 create policy "Users read own notifications" on public.notifications for select to authenticated using (auth.uid()=user_id);
 create policy "Users update own notifications" on public.notifications for update to authenticated using (auth.uid()=user_id) with check (auth.uid()=user_id);
 
