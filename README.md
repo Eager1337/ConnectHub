@@ -1,39 +1,37 @@
-# ConnectHub — Human Computer Interaction Project
+# ConnectHub
 
-A responsive, interactive front-end prototype of a university community platform. ConnectHub brings student announcements, academic collaboration, campus events and peer connections into one clear interface.
+A university community web app with a static HTML/CSS/JavaScript frontend and a Supabase backend.
 
-## Project scope
-This is an HCI prototype, not a production social network. It demonstrates the user interface and key interaction flows with local sample data in the browser. Authentication, real messaging infrastructure, moderation services, databases and institutional integrations are outside this prototype's scope.
+## Implemented application areas
+- Email/password sign-up, sign-in and sign-out
+- Student profiles (name, course, year and bio)
+- Campus feed: publish and delete posts, like/unlike, comment
+- Saved posts
+- Discover, create and join/leave campus groups
+- Create campus events and RSVP/cancel RSVP
+- Direct student conversations and private messages
+- Notifications view (ready for notification records)
 
-## Run locally
-1. Download or clone this repository.
-2. Open `index.html` in a modern browser. No build tools or server are required.
-3. Try the navigation, search, post composer, like buttons, event RSVP and notification controls.
+## Free setup
+1. Create a project at https://supabase.com/.
+2. Open Supabase SQL Editor and run all of `supabase/schema.sql`.
+3. In Project Settings → API, copy the Project URL and the public anon/publishable key.
+4. Copy `config.example.js` to `config.js`; set `supabaseUrl` and `supabaseAnonKey`. Never put a service_role/secret key in browser code.
+5. Run locally with `python -m http.server 8000` and open http://localhost:8000.
+6. In Supabase Authentication → URL Configuration, add your local URL and deployed site URL to allowed redirect URLs.
+7. Deploy the repository to Vercel (Hobby tier where eligible). Add the ignored `config.js` to the deployment using your private deployment workflow; do not commit private credentials.
+8. Test using at least two separate student accounts. Check post access, group joins, event RSVPs and that one account cannot read another account's private conversations.
 
-## Main interactions
-- Switch between Home, Discover, Events and Messages views.
-- Search posts and people.
-- Create a post using the composer.
-- Like and save posts.
-- RSVP to a campus event.
-- Open notifications and mark them as read.
-- Use the responsive mobile navigation.
+## Database and security
+The SQL creates profiles, posts, likes, saved posts, comments, groups, memberships, events, RSVPs, conversations, conversation members, messages and notifications. Row Level Security is enabled and private conversations are restricted to their members. Direct conversation creation uses the `start_conversation` database function.
 
-## Repository structure
-- `index.html` — semantic page structure and views
-- `styles.css` — responsive visual system and layouts
-- `app.js` — client-side interactions and sample content
-- `docs/project-report.md` — assignment report draft
-- `docs/presentation-script.md` — presentation script
-- `docs/personas-and-user-journeys.md` — personas and task journeys
-- `docs/usability-test-plan.md` — evaluation plan and recording template
+## Important configuration
+- `config.example.js` is a template only. The app will not connect until you create your own `config.js`.
+- The public anon/publishable key is intended for browser use with RLS enabled. Never expose the service_role key.
+- Configure email confirmation and password policies in Supabase Auth.
+- Realtime subscriptions are not yet enabled in the interface; the current app refreshes data after actions. Enable Realtime and add subscriptions before expecting live updates across devices.
+- Notifications currently have a display/read interface and database table; automated notification creation is a future integration.
+- Use real university privacy rules and moderation requirements before inviting a whole campus.
 
-## HCI principles
-The interface applies visibility of system status, consistency, recognition rather than recall, user control, clear feedback, readable typography and responsive design. These are design intentions to be evaluated; no usability-test results are claimed in this repository.
-
-## Academic integrity note
-Replace the cover-page placeholders with your group members' actual details. Conduct the proposed usability sessions and insert genuine findings before final submission. Do not present the sample personas or proposed test plan as real interview data.
-
-## References
-- Norman, D. A. (2013). *The Design of Everyday Things: Revised and Expanded Edition*. Basic Books.
-- Nielsen, J. (1994). Enhancing the explanatory power of usability heuristics. *Proceedings of the SIGCHI Conference on Human Factors in Computing Systems*, 152–158. https://doi.org/10.1145/191666.191729
+## HCI documentation
+See `docs/project-report.md`, `docs/presentation-script.md`, `docs/personas-and-user-journeys.md` and `docs/usability-test-plan.md`. The research/evaluation sections are plans until genuine participant sessions have been completed.
